@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8001";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export async function apiFetch(url: string, options: any = {}) {
   const token = localStorage.getItem("token");
