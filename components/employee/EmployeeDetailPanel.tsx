@@ -1,0 +1,221 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { apiFetch } from "@/services/api";
+
+function DetailView({ employee, auth }: any) {
+  if (!employee || !auth) return <div>Loading...</div>;
+
+  return (
+    <>
+      <Field label="이름" value={employee.name} />
+      <Field label="이메일" value={auth.email} />
+      <Field label="직급" value={employee.position} />
+      <Field label="입사일" value={employee.hire_date} />
+
+      <div className="mb-3">
+        <div className="text-muted small">역할</div>
+        <span
+          className={`badge ${auth.role === "ADMIN" ? "bg-danger" : "bg-secondary"}`}
+        >
+          {auth.role}
+        </span>
+      </div>
+    </>
+  );
+}
+
+function EditForm({ formData, setFormData }: any) {
+  return (
+    <>
+      <Input
+        label="이름"
+        value={formData.name}
+        onChange={(v: any) => setFormData({ ...formData, name: v })}
+      />
+
+      <Input
+        label="이메일"
+        value={formData.email}
+        onChange={(v: any) => setFormData({ ...formData, email: v })}
+      />
+
+      <Input
+        label="직급"
+        value={formData.position}
+        onChange={(v: any) => setFormData({ ...formData, position: v })}
+      />
+
+      <div className="mb-3">
+        <label className="form-label">역할</label>
+        <select
+          className="form-select"
+          value={formData.role}
+          onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+        >
+          <option value="USER">USER</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+      </div>
+    </>
+  );
+}
+
+function Input({ label, value, onChange }: any) {
+  return (
+    <div className="mb-3">
+      <label className="form-label">{label}</label>
+      <input
+        className="form-control"
+        value={value || ""}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  );
+}
+
+function Field({ label, value }: any) {
+  return (
+    <div className="mb-3">
+      <div className="text-muted small">{label}</div>
+      <div className="fw-semibold">{value || "-"}</div>
+    </div>
+  );
+}
+
+export default function EmployeeDetailPanel({
+  employeeId,
+  isOpen,
+  onClose,
+}: any) {
+  const [employee, setEmployee] = useState<any>(null);
+  const [auth, setAuth] = useState<any>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [formData, setFormData] = useState<any>(null);
+
+  useEffect(() => {
+    if (employeeId && isOpen) {
+      fetchData();
+    }
+  }, [employeeId, isOpen]);
+
+  const fetchData = async () => {
+    const emp = await apiFetch(`/employees/${employeeId}`);
+    const authData = await apiFetch(`/auth/${employeeId}`);
+
+    setEmployee(emp);
+    setAuth(authData);
+    setFormData({
+      ...emp,
+      email: authData.email,
+      role: authData.role,
+    });
+  };
+
+  const handleSave = async () => {
+    // 직원 정보 수정
+    await apiFetch(`/employees/${employeeId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        name: formData.name,
+        position: formData.position,
+      }),
+    });
+
+    // auth 수정
+    await apiFetch(`/auth/${employeeId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        role: formData.role,
+        email: formData.email,
+      }),
+    });
+
+    setEditMode(false);
+    fetchData();
+  };
+
+  const toggleActive = async () => {
+    await apiFetch(`/auth/${employeeId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        is_active: !auth.is_active,
+      }),
+    });
+
+    fetchData();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <>
+      {/* OVERLAY */}
+      <div
+        className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"
+        onClick={onClose}
+      />
+
+      {/* PANEL */}
+      <div
+        className="position-fixed top-0 end-0 h-100 bg-white shadow"
+        style={{ width: "420px", zIndex: 1050 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* HEADER */}
+        <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
+          <h5 className="mb-0">직원 상세 정보</h5>
+          <button className="btn-close" onClick={onClose}></button>
+        </div>
+
+        {/* BODY */}
+        <div className="p-3">
+          {!editMode ? (
+            <DetailView employee={employee} auth={auth} />
+          ) : (
+            <EditForm formData={formData} setFormData={setFormData} />
+          )}
+
+          {/* 로그인 차단 */}
+          <div className="mt-4">
+            <button
+              className={`btn ${
+                auth?.is_active ? "btn-danger" : "btn-success"
+              } w-100`}
+              onClick={toggleActive}
+            >
+              {auth?.is_active ? "계정 비활성화" : "계정 활성화"}
+            </button>
+          </div>
+        </div>
+
+        {/* FOOTER */}
+        <div className="p-3 border-top">
+          {!editMode ? (
+            <button
+              className="btn btn-primary w-100"
+              onClick={() => setEditMode(true)}
+            >
+              수정
+            </button>
+          ) : (
+            <div className="d-flex gap-2">
+              <button className="btn btn-primary w-50" onClick={handleSave}>
+                저장
+              </button>
+              <button
+                className="btn btn-outline-secondary w-50"
+                onClick={() => {
+                  setEditMode(false);
+                  setFormData(employee);
+                }}
+              >
+                취소
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { apiFetch } from "@/services/api";
 import EmployeeDetail from "@/components/EmployeeDetail";
 import EmployeeForm from "@/components/EmployeeForm";
+import LogoutButton from "@/components/LogoutButton";
 
 export default function MyPage() {
   const [employee, setEmployee] = useState<any>(null);
@@ -42,10 +43,9 @@ export default function MyPage() {
 
   return (
     <div className="container mt-5">
+      <LogoutButton />
       <h3 className="mb-4">마이페이지</h3>
-
       <EmployeeDetail employee={employee} />
-
       <EmployeeForm employee={employee} onSubmit={handleUpdate} />
     </div>
   );

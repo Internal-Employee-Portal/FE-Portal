@@ -21,7 +21,7 @@ export default function Home() {
       if (payload.role === "USER") {
         router.replace("/employee/me");
       } else if (payload.role === "ADMIN") {
-        router.replace("/admin");
+        router.replace("/admin/employees");
       } else {
         router.replace("/login");
       }

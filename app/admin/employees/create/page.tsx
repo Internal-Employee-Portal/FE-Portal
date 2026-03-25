@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import EmployeeForm from "@/components/EmployeeForm";
 import { apiFetch } from "@/services/api";
+import EmployeeCreateForm from "@/components/EmployeeCreateForm";
 
 export default function CreateEmployee() {
   const router = useRouter();
@@ -10,12 +10,7 @@ export default function CreateEmployee() {
   const handleCreate = async (data: any) => {
     await apiFetch("/employees", {
       method: "POST",
-      body: JSON.stringify({
-        ...data,
-        email: data.email,
-        password: data.password,
-        role: data.role || "USER",
-      }),
+      body: JSON.stringify(data),
     });
 
     alert("생성 완료");
@@ -26,10 +21,7 @@ export default function CreateEmployee() {
     <div className="container mt-5">
       <h3>직원 생성</h3>
 
-      <EmployeeForm
-        employee={{ name: "", position: "" }}
-        onSubmit={handleCreate}
-      />
+      <EmployeeCreateForm onSubmit={handleCreate} />
     </div>
   );
 }

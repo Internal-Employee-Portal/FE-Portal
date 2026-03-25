@@ -36,7 +36,14 @@ export default function LoginPage() {
       localStorage.setItem("token", data.access_token);
 
       // 이동
-      router.push("/employees");
+
+      const payload = JSON.parse(atob(data.access_token.split(".")[1]));
+
+      if (payload.role === "USER") {
+        router.replace("/employee/me");
+      } else if (payload.role === "ADMIN") {
+        router.replace("/admin/employees");
+      }
     } catch (err) {
       setError("이메일 또는 비밀번호가 올바르지 않습니다.");
     }
