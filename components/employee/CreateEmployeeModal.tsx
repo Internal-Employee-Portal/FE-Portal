@@ -44,9 +44,13 @@ export default function CreateEmployeeModal({
     }
 
     try {
+      console.log(formData);
       await apiFetch("/employees", {
         method: "POST",
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          department_id: formData.department_id || null,
+        }),
       });
 
       alert("직원 생성 완료");
