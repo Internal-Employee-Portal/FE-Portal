@@ -14,7 +14,6 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      console.log("asdf");
       const res = await fetch("http://localhost:8001/auth/login", {
         method: "POST",
         headers: {
