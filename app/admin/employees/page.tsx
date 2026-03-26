@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -10,6 +11,7 @@ import EmployeeDetailPanel from "@/components/employee/EmployeeDetailPanel";
 import { apiFetch } from "@/services/api";
 
 export default function AdminDashboard() {
+  const { user } = useAuth();
   const [employees, setEmployees] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState(null);
@@ -21,6 +23,15 @@ export default function AdminDashboard() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!user) return;
+
+    if (user.role !== "ADMIN") {
+      alert("관리자만 접근 가능합니다.");
+      router.push("/employees/me");
+    }
+  }, [user]);
+
   const fetchData = async () => {
     const data = await apiFetch("/employees/full");
     setEmployees(data);
@@ -29,6 +40,8 @@ export default function AdminDashboard() {
   const filtered = employees.filter((emp: any) =>
     emp.name.toLowerCase().includes(search.toLowerCase()),
   );
+
+  if (!user) return <div>Loading...</div>;
 
   return (
     <div className="d-flex">

@@ -12,6 +12,15 @@ export async function apiFetch(url: string, options: any = {}) {
     },
   });
 
+  if (res.status === 401 || res.status === 403) {
+    localStorage.removeItem("token");
+
+    alert("토큰이 만료되었습니다.");
+    window.location.href = "/login";
+
+    return;
+  }
+
   if (!res.ok) {
     throw new Error("API Error");
   }
