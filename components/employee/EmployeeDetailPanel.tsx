@@ -8,10 +8,14 @@ function DetailView({ employee, auth }: any) {
 
   return (
     <>
-      <Field label="이름" value={employee.name} />
+      <Field
+        label="이름"
+        value={`${employee.last_name} ${employee.first_name}`}
+      />
       <Field label="사번" value={employee.employee_code} />
       <Field label="이메일" value={auth.email} />
       <Field label="전화번호" value={employee.phone} />
+      <Field label="생년월일" value={employee.birth_date} />
       <Field label="부서" value={employee.department_id} />
       <Field label="직급" value={employee.position} />
       <Field label="입사일" value={employee.hire_date} />
@@ -35,14 +39,14 @@ function EditForm({ formData, setFormData }: any) {
     <>
       <Input
         label="이름"
-        value={formData.name}
+        value={`${formData.last_name} ${formData.first_name}`}
         onChange={(v: any) => setFormData({ ...formData, name: v })}
       />
 
       <Input
-        label="부서"
-        value={formData.department_id}
-        onChange={(v: any) => setFormData({ ...formData, department_id: v })}
+        label="사번"
+        value={formData.employee_code}
+        onChange={(v: any) => setFormData({ ...formData, employee_code: v })}
       />
 
       <Input
@@ -53,10 +57,46 @@ function EditForm({ formData, setFormData }: any) {
       />
 
       <Input
+        label="전화번호"
+        value={formData.phone}
+        onChange={(v: any) => setFormData({ ...formData, phone: v })}
+      />
+
+      <div className="mb-3">
+        <label className="form-label">생년월일</label>
+        <input
+          type="date"
+          className="form-control"
+          value={formData.birth_date || ""}
+          onChange={(e) =>
+            setFormData({ ...formData, birth_date: e.target.value })
+          }
+        />
+      </div>
+
+      <Input
+        label="부서"
+        value={formData.department_id}
+        onChange={(v: any) => setFormData({ ...formData, department_id: v })}
+      />
+
+      <Input
         label="직급"
         value={formData.position}
         onChange={(v: any) => setFormData({ ...formData, position: v })}
       />
+
+      <div className="mb-3">
+        <label className="form-label">입사일</label>
+        <input
+          type="date"
+          className="form-control"
+          value={formData.hire_date || ""}
+          onChange={(e) =>
+            setFormData({ ...formData, hire_date: e.target.value })
+          }
+        />
+      </div>
 
       <div className="mb-3">
         <label className="form-label">역할</label>
