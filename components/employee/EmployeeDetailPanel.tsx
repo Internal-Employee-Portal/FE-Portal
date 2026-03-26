@@ -9,6 +9,7 @@ function DetailView({ employee, auth }: any) {
   return (
     <>
       <Field label="이름" value={employee.name} />
+      <Field label="부서" value={employee.department_id} />
       <Field label="이메일" value={auth.email} />
       <Field label="직급" value={employee.position} />
       <Field label="입사일" value={employee.hire_date} />
@@ -34,6 +35,12 @@ function EditForm({ formData, setFormData }: any) {
         label="이름"
         value={formData.name}
         onChange={(v: any) => setFormData({ ...formData, name: v })}
+      />
+
+      <Input
+        label="부서"
+        value={formData.department_id}
+        onChange={(v: any) => setFormData({ ...formData, department_id: v })}
       />
 
       <Input
@@ -119,18 +126,14 @@ export default function EmployeeDetailPanel({
 
   const handleSave = async () => {
     await apiFetch(`/employees/${employeeId}`, {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify({
         name: formData.name,
+        department_id: formData.department_id,
         position: formData.position,
-      }),
-    });
-
-    await apiFetch(`/auth/${employeeId}`, {
-      method: "PUT",
-      body: JSON.stringify({
+        hire_date: formData.hire_date,
+        status: formData.status,
         role: formData.role,
-        email: formData.email,
       }),
     });
 
