@@ -19,7 +19,7 @@ export default function Home() {
       const payload = JSON.parse(atob(token.split(".")[1])); // JWT decode
 
       if (payload.role === "USER") {
-        router.replace("/employee/me");
+        router.replace("/my-info");
       } else if (payload.role === "ADMIN") {
         router.replace("/admin/employees");
       } else {

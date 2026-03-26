@@ -11,7 +11,6 @@ export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<any>(null);
 
-  // 🔥 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (e: any) => {
       if (ref.current && !ref.current.contains(e.target)) {
@@ -27,7 +26,6 @@ export default function UserDropdown() {
 
   return (
     <div className="position-relative" ref={ref}>
-      {/* 🔹 TRIGGER */}
       <div
         className="d-flex align-items-center gap-2"
         style={{ cursor: "pointer" }}
@@ -41,7 +39,6 @@ export default function UserDropdown() {
         />
       </div>
 
-      {/* 🔽 DROPDOWN */}
       {isOpen && (
         <div
           className="dropdown-menu show position-absolute end-0 mt-2 shadow rounded"
@@ -56,18 +53,18 @@ export default function UserDropdown() {
 
           <div className="dropdown-divider" />
 
-          {/* ⚙️ 개인정보 수정 */}
-          <button
-            className="dropdown-item"
-            onClick={() => {
-              router.push("/employees/me");
-              setIsOpen(false);
-            }}
-          >
-            개인정보 수정
-          </button>
+          {user?.role === "ADMIN" && (
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                router.push("/employees/me");
+                setIsOpen(false);
+              }}
+            >
+              개인정보 수정
+            </button>
+          )}
 
-          {/* 🚪 로그아웃 */}
           <button
             className="dropdown-item text-danger"
             onClick={() => {

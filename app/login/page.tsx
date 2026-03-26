@@ -39,7 +39,7 @@ export default function LoginPage() {
       const payload = JSON.parse(atob(data.access_token.split(".")[1]));
 
       if (payload.role === "USER") {
-        router.replace("/employee/me");
+        router.replace("/my-info");
       } else if (payload.role === "ADMIN") {
         router.replace("/admin/employees");
       }
