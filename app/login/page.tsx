@@ -1,11 +1,13 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
 
+  const { setUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -14,16 +16,19 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:8001/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+      );
 
       if (!res.ok) {
         throw new Error("Login failed");
@@ -34,9 +39,18 @@ export default function LoginPage() {
       // 토큰 저장
       localStorage.setItem("token", data.access_token);
 
-      // 이동
-
       const payload = JSON.parse(atob(data.access_token.split(".")[1]));
+
+      const me = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/employees/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${data.access_token}`,
+          },
+        },
+      ).then((res) => res.json());
+
+      setUser(me);
 
       if (payload.role === "USER") {
         router.replace("/my-info");
