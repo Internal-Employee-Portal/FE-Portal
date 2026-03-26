@@ -9,6 +9,7 @@ import Header from "@/components/layout/Header";
 import EmployeeTable from "@/components/employee/EmployeeTable";
 import EmployeeDetailPanel from "@/components/employee/EmployeeDetailPanel";
 import { apiFetch } from "@/services/api";
+import CreateEmployeeModal from "@/components/employee/CreateEmployeeModal";
 
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -16,6 +17,7 @@ export default function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const router = useRouter();
 
@@ -58,10 +60,16 @@ export default function AdminDashboard() {
 
               <button
                 className="btn btn-primary"
-                onClick={() => router.push("/admin/employees/create")}
+                onClick={() => setIsModalOpen(true)}
               >
                 새 직원 생성
               </button>
+
+              <CreateEmployeeModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSuccess={fetchData}
+              />
             </div>
 
             {/* SEARCH */}
