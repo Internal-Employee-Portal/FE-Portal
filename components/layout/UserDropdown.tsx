@@ -57,7 +57,7 @@ export default function UserDropdown() {
             <button
               className="dropdown-item"
               onClick={() => {
-                router.push("/employees/me");
+                router.push("/my-info");
                 setIsOpen(false);
               }}
             >

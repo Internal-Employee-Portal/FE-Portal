@@ -30,7 +30,7 @@ export default function AdminDashboard() {
 
     if (user.role !== "ADMIN") {
       alert("관리자만 접근 가능합니다.");
-      router.push("/employees/me");
+      router.push("/my-info");
     }
   }, [user]);
 
