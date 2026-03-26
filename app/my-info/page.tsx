@@ -20,10 +20,11 @@ export default function MyInfoPage() {
     setProfile({
       name: data.name,
       email: data.email,
-      phone: "-",
+      phone: data.phone,
       department: data.department_id,
       position: data.position,
       hireDate: data.hire_date,
+      employee_code: data.employee_code,
     });
   };
 

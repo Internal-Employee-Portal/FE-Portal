@@ -9,8 +9,10 @@ function DetailView({ employee, auth }: any) {
   return (
     <>
       <Field label="이름" value={employee.name} />
-      <Field label="부서" value={employee.department_id} />
+      <Field label="사번" value={employee.employee_code} />
       <Field label="이메일" value={auth.email} />
+      <Field label="전화번호" value={employee.phone} />
+      <Field label="부서" value={employee.department_id} />
       <Field label="직급" value={employee.position} />
       <Field label="입사일" value={employee.hire_date} />
 

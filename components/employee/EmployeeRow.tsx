@@ -7,7 +7,7 @@ export default function EmployeeRow({ emp, onClick }: any) {
       <td>{emp.email || "-"}</td>
       <td>{emp.department || "-"}</td>
       <td>{emp.position || "-"}</td>
-      <td>-</td>
+      <td>{emp.phone || "-"}</td>
       <td>{emp.hire_date || "-"}</td>
 
       <td>
