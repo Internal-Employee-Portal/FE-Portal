@@ -16,7 +16,9 @@ function DetailView({ employee, auth }: any) {
       <div className="mb-3">
         <div className="text-muted small">역할</div>
         <span
-          className={`badge ${auth.role === "ADMIN" ? "bg-danger" : "bg-secondary"}`}
+          className={`badge ${
+            auth.role === "ADMIN" ? "bg-danger" : "bg-secondary"
+          }`}
         >
           {auth.role}
         </span>
@@ -37,7 +39,8 @@ function EditForm({ formData, setFormData }: any) {
       <Input
         label="이메일"
         value={formData.email}
-        onChange={(v: any) => setFormData({ ...formData, email: v })}
+        style={{ cursor: "not-allowed" }}
+        disabled
       />
 
       <Input
@@ -61,14 +64,16 @@ function EditForm({ formData, setFormData }: any) {
   );
 }
 
-function Input({ label, value, onChange }: any) {
+function Input({ label, value, onChange, disabled }: any) {
   return (
     <div className="mb-3">
       <label className="form-label">{label}</label>
       <input
-        className="form-control"
+        className={`form-control ${disabled ? "bg-light" : ""}`}
         value={value || ""}
-        onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
+        style={{ cursor: disabled ? "not-allowed" : "text" }}
+        onChange={(e) => onChange?.(e.target.value)}
       />
     </div>
   );
@@ -113,7 +118,6 @@ export default function EmployeeDetailPanel({
   };
 
   const handleSave = async () => {
-    // 직원 정보 수정
     await apiFetch(`/employees/${employeeId}`, {
       method: "PUT",
       body: JSON.stringify({
@@ -122,7 +126,6 @@ export default function EmployeeDetailPanel({
       }),
     });
 
-    // auth 수정
     await apiFetch(`/auth/${employeeId}`, {
       method: "PUT",
       body: JSON.stringify({
@@ -176,7 +179,6 @@ export default function EmployeeDetailPanel({
             <EditForm formData={formData} setFormData={setFormData} />
           )}
 
-          {/* 로그인 차단 */}
           <div className="mt-4">
             <button
               className={`btn ${
