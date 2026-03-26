@@ -2,7 +2,7 @@
 
 export default function EmployeeRow({ emp, onClick }: any) {
   return (
-    <tr>
+    <tr style={{ cursor: "pointer" }} onClick={() => onClick(emp.id)}>
       <td>{emp.name}</td>
       <td>{emp.email || "-"}</td>
       <td>{emp.department || "-"}</td>
@@ -18,15 +18,6 @@ export default function EmployeeRow({ emp, onClick }: any) {
         >
           {emp.role === "ADMIN" ? "관리자" : "직원"}
         </span>
-      </td>
-
-      <td>
-        <button
-          className="btn btn-outline-primary btn-sm"
-          onClick={() => onClick(emp.id)}
-        >
-          상세보기
-        </button>
       </td>
     </tr>
   );

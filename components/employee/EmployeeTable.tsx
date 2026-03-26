@@ -14,9 +14,9 @@ export default function EmployeeTable({ employees, onSelect }: any) {
           <th>전화번호</th>
           <th>입사일</th>
           <th>역할</th>
-          <th>작업</th>
         </tr>
       </thead>
+
       <tbody>
         {employees.map((emp: any) => (
           <EmployeeRow key={emp.id} emp={emp} onClick={onSelect} />
