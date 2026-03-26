@@ -106,6 +106,13 @@ export default function EmployeeDetailPanel({
   const [formData, setFormData] = useState<any>(null);
 
   useEffect(() => {
+    if (!isOpen) {
+      setEditMode(false);
+      setFormData(null);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     if (employeeId && isOpen) {
       fetchData();
     }
