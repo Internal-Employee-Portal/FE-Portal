@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { apiFetch } from "@/services/api";
 import BackgroundSection from "./background/BackgroundSection";
 
-function DetailView({ employee, auth }: any) {
-  if (!employee || !auth) return <div>Loading...</div>;
+function DetailView({ employee }: any) {
+  if (!employee) return <div>Loading...</div>;
 
   return (
     <>
@@ -14,7 +14,7 @@ function DetailView({ employee, auth }: any) {
         value={`${employee.last_name} ${employee.first_name}`}
       />
       <Field label="사번" value={employee.employee_code} />
-      <Field label="이메일" value={auth.email} />
+      <Field label="이메일" value={employee.email} />
       <Field label="전화번호" value={employee.phone} />
       <Field label="생년월일" value={employee.birth_date} />
       <Field label="부서" value={employee.department_id} />
@@ -25,10 +25,10 @@ function DetailView({ employee, auth }: any) {
         <div className="text-muted small">역할</div>
         <span
           className={`badge ${
-            auth.role === "ADMIN" ? "bg-danger" : "bg-secondary"
+            employee.role === "ADMIN" ? "bg-danger" : "bg-secondary"
           }`}
         >
-          {auth.role}
+          {employee.role}
         </span>
       </div>
     </>
@@ -157,7 +157,6 @@ export default function EmployeeDetailPanel({
   onClose,
 }: any) {
   const [employee, setEmployee] = useState<any>(null);
-  const [auth, setAuth] = useState<any>(null);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState<any>(null);
 
@@ -176,15 +175,9 @@ export default function EmployeeDetailPanel({
 
   const fetchData = async () => {
     const emp = await apiFetch(`/employees/${employeeId}`);
-    const authData = await apiFetch(`/auth/${employeeId}`);
 
     setEmployee(emp);
-    setAuth(authData);
-    setFormData({
-      ...emp,
-      email: authData.email,
-      role: authData.role,
-    });
+    setFormData(emp);
   };
 
   const handleSave = async () => {
@@ -208,7 +201,7 @@ export default function EmployeeDetailPanel({
     await apiFetch(`/auth/${employeeId}`, {
       method: "PUT",
       body: JSON.stringify({
-        is_active: !auth.is_active,
+        is_active: !employee.is_active,
       }),
     });
 
@@ -237,7 +230,7 @@ export default function EmployeeDetailPanel({
         <div className="flex-grow-1 overflow-auto">
           <div className="p-4">
             {!editMode ? (
-              <DetailView employee={employee} auth={auth} />
+              <DetailView employee={employee} />
             ) : (
               <EditForm formData={formData} setFormData={setFormData} />
             )}
@@ -271,11 +264,11 @@ export default function EmployeeDetailPanel({
             <div className="mt-2">
               <button
                 className={`btn ${
-                  auth?.is_active ? "btn-danger" : "btn-success"
+                  employee?.is_active ? "btn-danger" : "btn-success"
                 } w-100 py-2`}
                 onClick={toggleActive}
               >
-                {auth?.is_active ? "계정 비활성화" : "계정 활성화"}
+                {employee?.is_active ? "계정 비활성화" : "계정 활성화"}
               </button>
             </div>
 
