@@ -8,6 +8,7 @@ import { apiFetch } from "@/services/api";
 export default function ProfileCard({ profile }: any) {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(profile);
+  const [currentProfile, setCurrentProfile] = useState(profile);
 
   const handleChange = (key: string, value: any) => {
     setFormData({ ...formData, [key]: value });
@@ -15,12 +16,19 @@ export default function ProfileCard({ profile }: any) {
 
   const handleSave = async () => {
     try {
-      await apiFetch("/employees/me", {
-        method: "PUT",
-        body: JSON.stringify(formData),
+      await apiFetch(`/employees/${profile.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          phone: formData.phone,
+          department_id: formData.department_id,
+          position: formData.position,
+        }),
       });
 
-      alert("수정 완료");
+      const updated = await apiFetch(`/employees/${profile.id}`);
+      setCurrentProfile(updated);
+      setFormData(updated);
+
       setIsEditing(false);
     } catch {
       alert("수정 실패");
@@ -28,7 +36,7 @@ export default function ProfileCard({ profile }: any) {
   };
 
   const handleCancel = () => {
-    setFormData(profile); // 원복
+    setFormData(profile);
     setIsEditing(false);
   };
 
@@ -63,20 +71,23 @@ export default function ProfileCard({ profile }: any) {
         )}
       </div>
 
-      {/* 🔥 BODY */}
       <div className="card-body p-5">
-        {isEditing ? (
-          <ProfileForm formData={formData} onChange={handleChange} />
-        ) : (
+        {!isEditing ? (
           <>
-            <ProfileInfoRow label="이름" value={profile.name} />
-            <ProfileInfoRow label="사번" value={profile.employee_code} />
-            <ProfileInfoRow label="이메일" value={profile.email} />
-            <ProfileInfoRow label="전화번호" value={profile.phone} />
-            <ProfileInfoRow label="부서" value={profile.department} />
-            <ProfileInfoRow label="직급" value={profile.position} />
-            <ProfileInfoRow label="입사일" value={profile.hireDate} />
+            <ProfileInfoRow label="이름" value={currentProfile.name} />
+            <ProfileInfoRow label="사번" value={currentProfile.employee_code} />
+            <ProfileInfoRow label="이메일" value={currentProfile.email} />
+            <ProfileInfoRow
+              label="생년월일"
+              value={currentProfile.birth_date}
+            />
+            <ProfileInfoRow label="전화번호" value={currentProfile.phone} />
+            <ProfileInfoRow label="부서" value={currentProfile.department} />
+            <ProfileInfoRow label="직급" value={currentProfile.position} />
+            <ProfileInfoRow label="입사일" value={currentProfile.hire_date} />
           </>
+        ) : (
+          <ProfileForm formData={formData} onChange={handleChange} />
         )}
       </div>
     </div>

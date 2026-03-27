@@ -1,42 +1,43 @@
 "use client";
 
+import ProfileInfoRow from "./ProfileInfoRow";
+import { formatPhone } from "@/utils/format";
+
 export default function ProfileForm({ formData, onChange }: any) {
   return (
     <form>
-      {/* 이름 */}
       <div className="mb-4">
-        <label className="form-label fw-bold">이름</label>
-        <input
-          className="form-control"
-          value={formData.name || ""}
-          onChange={(e) => onChange("name", e.target.value)}
-          disabled
-        />
+        <ProfileInfoRow label="이름" value={formData.name} />
       </div>
 
-      {/* 이메일 (수정 불가) */}
       <div className="mb-4">
-        <label className="form-label fw-bold">이메일</label>
-        <input
-          type="email"
-          className="form-control bg-light"
-          value={formData.email || ""}
-          disabled
-        />
-        <div className="form-text text-muted">이메일은 수정할 수 없습니다.</div>
+        <ProfileInfoRow label="사번" value={formData.employee_code} />
       </div>
 
-      {/* 전화번호 */}
+      <div className="mb-4">
+        <ProfileInfoRow label="이메일" value={formData.email} />
+      </div>
+
+      <div className="mb-4">
+        <ProfileInfoRow label="생년월일" value={formData.birth_date} />
+      </div>
+
       <div className="mb-4">
         <label className="form-label fw-bold">전화번호</label>
         <input
+          type="tel"
+          inputMode="numeric"
           className="form-control"
+          placeholder="010-1234-5678"
+          maxLength={13}
           value={formData.phone || ""}
-          onChange={(e) => onChange("phone", e.target.value)}
+          onChange={(e) => {
+            const formatted = formatPhone(e.target.value);
+            onChange("phone", formatted);
+          }}
         />
       </div>
 
-      {/* 부서 */}
       <div className="mb-4">
         <label className="form-label fw-bold">부서</label>
         <input
@@ -46,7 +47,6 @@ export default function ProfileForm({ formData, onChange }: any) {
         />
       </div>
 
-      {/* 직급 */}
       <div className="mb-4">
         <label className="form-label fw-bold">직급</label>
         <input

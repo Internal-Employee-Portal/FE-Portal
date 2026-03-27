@@ -18,13 +18,15 @@ export default function MyInfoPage() {
     const data = await apiFetch("/employees/me");
 
     setProfile({
+      id: data.id,
       name: data.name,
       email: data.email,
       phone: data.phone,
       department: data.department_id,
       position: data.position,
-      hireDate: data.hire_date,
+      hire_date: data.hire_date,
       employee_code: data.employee_code,
+      birth_date: data.birth_date,
     });
   };
 
