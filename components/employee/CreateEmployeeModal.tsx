@@ -10,10 +10,13 @@ export default function CreateEmployeeModal({
   onSuccess,
 }: any) {
   const [formData, setFormData] = useState({
-    name: "",
+    last_name: "",
+    first_name: "",
+    employee_code: "",
+    phone: "",
+    birth_date: "",
     email: "",
     password: "",
-    phone: "",
     department_id: "",
     position: "",
     hire_date: "",
@@ -27,11 +30,10 @@ export default function CreateEmployeeModal({
   const handleSubmit = async () => {
     // 🔥 기본 validation
     const required = [
-      "name",
+      "last_name",
+      "first_name",
       "email",
       "password",
-      "department_id",
-      "position",
       "hire_date",
       "role",
     ];
@@ -44,12 +46,15 @@ export default function CreateEmployeeModal({
     }
 
     try {
-      console.log(formData);
       await apiFetch("/employees", {
         method: "POST",
         body: JSON.stringify({
           ...formData,
+          employee_code: formData.employee_code || null,
+          phone: formData.phone || null,
+          birth_date: formData.birth_date || null,
           department_id: formData.department_id || null,
+          position: formData.position || null,
         }),
       });
 
@@ -57,10 +62,13 @@ export default function CreateEmployeeModal({
 
       // 초기화
       setFormData({
-        name: "",
+        last_name: "",
+        first_name: "",
+        employee_code: "",
+        phone: "",
+        birth_date: "",
         email: "",
         password: "",
-        phone: "",
         department_id: "",
         position: "",
         hire_date: "",

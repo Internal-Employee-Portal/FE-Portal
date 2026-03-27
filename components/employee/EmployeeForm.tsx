@@ -1,16 +1,57 @@
 "use client";
 
+import { formatPhone } from "@/utils/format";
+
 export default function EmployeeForm({ formData, onChange }: any) {
   return (
     <div className="row">
       {/* 이름 */}
+      <div className="col-md-6 mb-3">
+        <label className="form-label">이름 *</label>
+
+        <div className="d-flex gap-2">
+          <input
+            className="form-control"
+            placeholder="성"
+            value={formData.last_name || ""}
+            onChange={(e) => onChange("last_name", e.target.value)}
+          />
+
+          <input
+            className="form-control"
+            placeholder="이름"
+            value={formData.first_name || ""}
+            onChange={(e) => onChange("first_name", e.target.value)}
+          />
+        </div>
+      </div>
+
+      {/* 사번 */}
       <Input
         col
-        label="이름 *"
-        value={formData.name}
-        onChange={(v: any) => onChange("name", v)}
-        autoFocus
+        label="사번"
+        value={formData.employee_code}
+        onChange={(v: any) => onChange("employee_code", v)}
       />
+
+      {/* 전화번호 */}
+      <Input
+        col
+        label="전화번호"
+        value={formData.phone}
+        onChange={(v: any) => onChange("phone", formatPhone(v))}
+      />
+
+      {/* 생년월일 */}
+      <div className="col-md-6 mb-3">
+        <label className="form-label">생년월일</label>
+        <input
+          type="date"
+          className="form-control"
+          value={formData.birth_date || ""}
+          onChange={(e) => onChange("birth_date", e.target.value)}
+        />
+      </div>
 
       {/* 이메일 */}
       <Input
@@ -29,18 +70,10 @@ export default function EmployeeForm({ formData, onChange }: any) {
         onChange={(v: any) => onChange("password", v)}
       />
 
-      {/* 전화번호 */}
-      <Input
-        col
-        label="전화번호"
-        value={formData.phone}
-        onChange={(v: any) => onChange("phone", v)}
-      />
-
       {/* 부서 */}
       <Input
         col
-        label="부서 ID *"
+        label="부서 ID"
         value={formData.department_id}
         onChange={(v: any) => onChange("department_id", v)}
       />
@@ -48,7 +81,7 @@ export default function EmployeeForm({ formData, onChange }: any) {
       {/* 직급 */}
       <Input
         col
-        label="직급 *"
+        label="직급"
         value={formData.position}
         onChange={(v: any) => onChange("position", v)}
       />
@@ -87,7 +120,7 @@ function Input({ label, value, onChange, type = "text", col, autoFocus }: any) {
       <input
         type={type}
         className="form-control"
-        value={value}
+        value={value || ""}
         autoFocus={autoFocus}
         onChange={(e) => onChange(e.target.value)}
       />

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { apiFetch } from "@/services/api";
+import { formatPhone } from "@/utils/format";
 import BackgroundSection from "./background/BackgroundSection";
 
 function DetailView({ employee }: any) {
@@ -73,7 +74,9 @@ function EditForm({ formData, setFormData }: any) {
       <Input
         label="전화번호"
         value={formData.phone}
-        onChange={(v: any) => setFormData({ ...formData, phone: v })}
+        onChange={(v: any) =>
+          setFormData({ ...formData, phone: formatPhone(v) })
+        }
       />
 
       <div className="mb-3">
