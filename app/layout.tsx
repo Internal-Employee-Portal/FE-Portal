@@ -1,7 +1,8 @@
+import { ReactNode } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthProvider } from "@/context/AuthContext";
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html>
       <body>
