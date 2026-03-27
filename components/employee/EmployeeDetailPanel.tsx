@@ -206,72 +206,69 @@ export default function EmployeeDetailPanel({
 
   return (
     <>
-      {/* OVERLAY */}
       <div
         className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"
         onClick={onClose}
       />
 
-      {/* PANEL */}
       <div
-        className="position-fixed top-0 end-0 h-100 bg-white shadow"
-        style={{ width: "420px", zIndex: 1050, overflow: "auto" }}
+        className="position-fixed top-0 end-0 h-100 bg-white shadow d-flex flex-column"
+        style={{ width: "420px", zIndex: 1050 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* HEADER */}
         <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
           <h5 className="mb-0">직원 상세 정보</h5>
           <button className="btn-close" onClick={onClose}></button>
         </div>
 
-        {/* BODY */}
-        <div className="p-3">
-          {!editMode ? (
-            <DetailView employee={employee} auth={auth} />
-          ) : (
-            <EditForm formData={formData} setFormData={setFormData} />
-          )}
+        <div className="flex-grow-1 overflow-auto">
+          <div className="p-4">
+            {!editMode ? (
+              <DetailView employee={employee} auth={auth} />
+            ) : (
+              <EditForm formData={formData} setFormData={setFormData} />
+            )}
 
-          <div className="mt-4">
-            <button
-              className={`btn ${
-                auth?.is_active ? "btn-danger" : "btn-success"
-              } w-100`}
-              onClick={toggleActive}
-            >
-              {auth?.is_active ? "계정 비활성화" : "계정 활성화"}
-            </button>
-          </div>
-        </div>
+            <div className="mt-4">
+              {!editMode ? (
+                <button
+                  className="btn btn-primary w-100 py-2"
+                  onClick={() => setEditMode(true)}
+                >
+                  수정
+                </button>
+              ) : (
+                <div className="d-flex gap-2">
+                  <button className="btn btn-primary w-50" onClick={handleSave}>
+                    저장
+                  </button>
+                  <button
+                    className="btn btn-outline-secondary w-50"
+                    onClick={() => {
+                      setEditMode(false);
+                      setFormData(employee);
+                    }}
+                  >
+                    취소
+                  </button>
+                </div>
+              )}
+            </div>
 
-        {/* FOOTER */}
-        <div className="p-3">
-          {!editMode ? (
-            <button
-              className="btn btn-primary w-100"
-              onClick={() => setEditMode(true)}
-            >
-              수정
-            </button>
-          ) : (
-            <div className="d-flex gap-2">
-              <button className="btn btn-primary w-50" onClick={handleSave}>
-                저장
-              </button>
+            <div className="mt-2">
               <button
-                className="btn btn-outline-secondary w-50"
-                onClick={() => {
-                  setEditMode(false);
-                  setFormData(employee);
-                }}
+                className={`btn ${
+                  auth?.is_active ? "btn-danger" : "btn-success"
+                } w-100 py-2`}
+                onClick={toggleActive}
               >
-                취소
+                {auth?.is_active ? "계정 비활성화" : "계정 활성화"}
               </button>
             </div>
-          )}
-        </div>
 
-        <BackgroundSection employee={employee} />
+            <BackgroundSection employee={employee} />
+          </div>
+        </div>
       </div>
     </>
   );
