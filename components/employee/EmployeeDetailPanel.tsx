@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { apiFetch } from "@/services/api";
+import BackgroundSection from "./background/BackgroundSection";
 
 function DetailView({ employee, auth }: any) {
   if (!employee || !auth) return <div>Loading...</div>;
@@ -214,7 +215,7 @@ export default function EmployeeDetailPanel({
       {/* PANEL */}
       <div
         className="position-fixed top-0 end-0 h-100 bg-white shadow"
-        style={{ width: "420px", zIndex: 1050 }}
+        style={{ width: "420px", zIndex: 1050, overflow: "auto" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* HEADER */}
@@ -244,7 +245,7 @@ export default function EmployeeDetailPanel({
         </div>
 
         {/* FOOTER */}
-        <div className="p-3 border-top">
+        <div className="p-3">
           {!editMode ? (
             <button
               className="btn btn-primary w-100"
@@ -269,6 +270,8 @@ export default function EmployeeDetailPanel({
             </div>
           )}
         </div>
+
+        <BackgroundSection employee={employee} />
       </div>
     </>
   );
