@@ -38,11 +38,29 @@ function DetailView({ employee, auth }: any) {
 function EditForm({ formData, setFormData }: any) {
   return (
     <>
-      <Input
-        label="이름"
-        value={`${formData.last_name} ${formData.first_name}`}
-        onChange={(v: any) => setFormData({ ...formData, name: v })}
-      />
+      <div className="mb-3">
+        <label className="form-label">이름</label>
+
+        <div className="d-flex gap-2">
+          <input
+            className="form-control"
+            placeholder="성"
+            value={formData.last_name || ""}
+            onChange={(e) =>
+              setFormData({ ...formData, last_name: e.target.value })
+            }
+          />
+
+          <input
+            className="form-control"
+            placeholder="이름"
+            value={formData.first_name || ""}
+            onChange={(e) =>
+              setFormData({ ...formData, first_name: e.target.value })
+            }
+          />
+        </div>
+      </div>
 
       <Input
         label="사번"
@@ -50,12 +68,7 @@ function EditForm({ formData, setFormData }: any) {
         onChange={(v: any) => setFormData({ ...formData, employee_code: v })}
       />
 
-      <Input
-        label="이메일"
-        value={formData.email}
-        style={{ cursor: "not-allowed" }}
-        disabled
-      />
+      <Field label="이메일" value={formData.email} />
 
       <Input
         label="전화번호"
