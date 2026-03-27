@@ -15,7 +15,7 @@ export default function AdminDashboard() {
   const { user } = useAuth();
   const [employees, setEmployees] = useState([]);
   const [search, setSearch] = useState("");
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
