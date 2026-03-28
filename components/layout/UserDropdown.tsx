@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 import ChangePasswordModal from "../auth/ChangePasswordModal";
 
 export default function UserDropdown() {
@@ -10,6 +11,7 @@ export default function UserDropdown() {
 
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<any>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const handleClickOutside = (e: any) => {
@@ -51,6 +53,19 @@ export default function UserDropdown() {
             <div className="text-muted small">{user.email}</div>
           </div>
           <div className="dropdown-divider" />
+
+          {user?.role === "ADMIN" ? (
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                router.push("/my-info");
+              }}
+            >
+              마이페이지
+            </button>
+          ) : (
+            ""
+          )}
           <button
             className="dropdown-item"
             onClick={() => setIsPwModalOpen(true)}
