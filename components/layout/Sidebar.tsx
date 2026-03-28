@@ -1,9 +1,12 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
   const { user } = useAuth();
+  const pathname = usePathname();
 
   return (
     <div
@@ -15,9 +18,29 @@ export default function Sidebar() {
       <ul className="nav nav-pills flex-column">
         {/* 관리자 */}
         {user?.role === "ADMIN" && (
-          <li className="nav-item">
-            <a className="nav-link active">직원 목록</a>
-          </li>
+          <>
+            <li className="nav-item">
+              <Link
+                href="/admin/employees"
+                className={`nav-link ${
+                  pathname === "/admin/employees" ? "active" : ""
+                }`}
+              >
+                직원 목록
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link
+                href="/admin/departments"
+                className={`nav-link ${
+                  pathname === "/admin/departments" ? "active" : ""
+                }`}
+              >
+                부서 관리
+              </Link>
+            </li>
+          </>
         )}
 
         {/* 일반 사용자 */}
