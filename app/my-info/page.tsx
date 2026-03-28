@@ -22,7 +22,7 @@ export default function MyInfoPage() {
       name: data.name,
       email: data.email,
       phone: data.phone,
-      department: data.department_id,
+      department: data.department_name,
       position: data.position,
       hire_date: data.hire_date,
       employee_code: data.employee_code,

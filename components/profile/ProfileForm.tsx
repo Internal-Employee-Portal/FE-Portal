@@ -18,11 +18,17 @@ export default function ProfileForm({ formData, onChange }: any) {
         <ProfileInfoRow label="이메일" value={formData.email} />
       </div>
 
-      <div className="mb-4">
-        <ProfileInfoRow label="생년월일" value={formData.birth_date} />
+      <div className="col-md-6 mb-3">
+        <label className="form-label fw-bold">생년월일</label>
+        <input
+          type="date"
+          className="form-control"
+          value={formData.birth_date || ""}
+          onChange={(e) => onChange("birth_date", e.target.value)}
+        />
       </div>
 
-      <div className="mb-4">
+      <div className="col-md-6 mb-3">
         <label className="form-label fw-bold">전화번호</label>
         <input
           type="tel"
@@ -39,21 +45,15 @@ export default function ProfileForm({ formData, onChange }: any) {
       </div>
 
       <div className="mb-4">
-        <label className="form-label fw-bold">부서</label>
-        <input
-          className="form-control"
-          value={formData.department || ""}
-          onChange={(e) => onChange("department", e.target.value)}
-        />
+        <ProfileInfoRow label="부서" value={formData.department} />
       </div>
 
       <div className="mb-4">
-        <label className="form-label fw-bold">직급</label>
-        <input
-          className="form-control"
-          value={formData.position || ""}
-          onChange={(e) => onChange("position", e.target.value)}
-        />
+        <ProfileInfoRow label="직급" value={formData.position} />
+      </div>
+
+      <div className="mb-4">
+        <ProfileInfoRow label="입사일" value={formData.hire_date} />
       </div>
     </form>
   );

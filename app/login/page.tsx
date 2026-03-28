@@ -110,7 +110,7 @@ export default function LoginPage() {
           style={{ cursor: "pointer" }}
           onClick={() => {
             setEmail("admin@test.com");
-            setPassword("1234");
+            setPassword("admin1234");
           }}
         >
           <div className="text-muted small mb-2 fw-semibold">관리자 계정</div>
@@ -133,7 +133,7 @@ export default function LoginPage() {
           style={{ cursor: "pointer" }}
           onClick={() => {
             setEmail("user@test.com");
-            setPassword("1234");
+            setPassword("user1234");
           }}
         >
           <div className="text-muted small mb-2 fw-semibold">

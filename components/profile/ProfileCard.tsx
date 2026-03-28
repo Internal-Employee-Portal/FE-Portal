@@ -20,8 +20,7 @@ export default function ProfileCard({ profile }: any) {
         method: "PATCH",
         body: JSON.stringify({
           phone: formData.phone,
-          department_id: formData.department_id,
-          position: formData.position,
+          birth_date: formData.birth_date,
         }),
       });
 
@@ -82,7 +81,10 @@ export default function ProfileCard({ profile }: any) {
               value={currentProfile.birth_date}
             />
             <ProfileInfoRow label="전화번호" value={currentProfile.phone} />
-            <ProfileInfoRow label="부서" value={currentProfile.department} />
+            <ProfileInfoRow
+              label="부서"
+              value={currentProfile.department_name}
+            />
             <ProfileInfoRow label="직급" value={currentProfile.position} />
             <ProfileInfoRow label="입사일" value={currentProfile.hire_date} />
           </>
