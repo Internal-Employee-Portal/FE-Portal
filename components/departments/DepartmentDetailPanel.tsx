@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { apiFetch } from "@/services/api";
+import ConfirmModal from "../layout/ConfirmModal";
 
 /* =========================
    DETAIL VIEW
@@ -132,6 +133,7 @@ export default function DepartmentDetailPanel({
   const [admins, setAdmins] = useState<any[]>([]);
   const [dept, setDept] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   /* =========================
      RESET WHEN CLOSE
@@ -205,6 +207,25 @@ export default function DepartmentDetailPanel({
     }
   };
 
+  const handleDeleteClick = () => {
+    setIsConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsConfirmOpen(false);
+
+    try {
+      await apiFetch(`/departments/${deptId}`, {
+        method: "DELETE",
+      });
+
+      onClose();
+    } catch (err) {
+      console.error(err);
+      alert("삭제 실패");
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -223,9 +244,34 @@ export default function DepartmentDetailPanel({
         onClick={(e) => e.stopPropagation()}
       >
         {/* header */}
-        <div className="d-flex justify-content-between p-4 border-bottom">
+        <div className="d-flex justify-content-between align-items-center p-4 border-bottom">
           <h5 className="mb-0 fw-bold">부서 상세</h5>
-          <button className="btn-close" onClick={onClose} />
+
+          <div className="d-flex align-items-center gap-3">
+            {/* 삭제 버튼 */}
+            <i
+              className="bi bi-trash"
+              style={{ cursor: "pointer" }}
+              onClick={() => setIsConfirmOpen(true)}
+            ></i>
+            <ConfirmModal
+              isOpen={isConfirmOpen}
+              title="부서 삭제"
+              message={
+                <>
+                  부서를 삭제하시겠습니까? <br />
+                  <span className="text-danger small">
+                    부서에 소속된 직원들의 부서 정보는 제거됩니다.
+                  </span>
+                </>
+              }
+              onCancel={() => setIsConfirmOpen(false)}
+              onConfirm={handleConfirmDelete}
+            />
+
+            {/* 닫기 버튼 */}
+            <button className="btn-close" onClick={onClose} />
+          </div>
         </div>
 
         {/* body */}
