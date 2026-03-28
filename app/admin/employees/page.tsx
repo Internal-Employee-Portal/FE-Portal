@@ -139,6 +139,9 @@ export default function AdminDashboard() {
             <EmployeeDetailPanel
               employeeId={selectedId}
               isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              setSelectedId={setSelectedId}
+              fetchListData={fetchData}
               onClose={() => setIsOpen(false)}
               departments={departments}
             />

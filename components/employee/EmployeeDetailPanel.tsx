@@ -204,6 +204,9 @@ function Field({ label, value }: any) {
 export default function EmployeeDetailPanel({
   employeeId,
   isOpen,
+  setIsOpen,
+  setSelectedId,
+  fetchListData,
   onClose,
   departments,
 }: any) {
@@ -251,18 +254,24 @@ export default function EmployeeDetailPanel({
 
     setEditMode(false);
     fetchData();
+    setIsOpen(false);
+    setSelectedId(null);
+    fetchListData();
   };
 
   const handleConfirmDelete = async () => {
     setIsConfirmOpen(false);
 
     try {
+      onClose();
+      setIsOpen(false);
+      setSelectedId(null);
+
       await apiFetch(`/employees/${employeeId}`, {
         method: "DELETE",
       });
 
-      onClose();
-      fetchData();
+      fetchListData();
     } catch (err) {
       console.error(err);
       alert("삭제 실패");
