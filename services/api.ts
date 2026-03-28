@@ -22,7 +22,8 @@ export async function apiFetch(url: string, options: any = {}) {
   }
 
   if (!res.ok) {
-    throw new Error("API Error");
+    const errorData = await res.json();
+    throw new Error(errorData.detail || "요청 실패");
   }
 
   return res.json();

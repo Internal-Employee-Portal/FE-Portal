@@ -2,11 +2,11 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
+import ChangePasswordModal from "../auth/ChangePasswordModal";
 
 export default function UserDropdown() {
   const { user, logout } = useAuth();
-  const router = useRouter();
+  const [isPwModalOpen, setIsPwModalOpen] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<any>(null);
@@ -50,21 +50,17 @@ export default function UserDropdown() {
             <div className="fw-semibold">{user.name}</div>
             <div className="text-muted small">{user.email}</div>
           </div>
-
           <div className="dropdown-divider" />
-
-          {user?.role === "ADMIN" && (
-            <button
-              className="dropdown-item"
-              onClick={() => {
-                router.push("/my-info");
-                setIsOpen(false);
-              }}
-            >
-              개인정보 수정
-            </button>
-          )}
-
+          <button
+            className="dropdown-item"
+            onClick={() => setIsPwModalOpen(true)}
+          >
+            비밀번호 변경
+          </button>
+          <ChangePasswordModal
+            isOpen={isPwModalOpen}
+            onClose={() => setIsPwModalOpen(false)}
+          />
           <button
             className="dropdown-item text-danger"
             onClick={() => {
