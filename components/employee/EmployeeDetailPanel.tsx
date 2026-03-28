@@ -18,7 +18,7 @@ function DetailView({ employee }: any) {
       <Field label="이메일" value={employee.email} />
       <Field label="전화번호" value={employee.phone} />
       <Field label="생년월일" value={employee.birth_date} />
-      <Field label="부서" value={employee.department_id} />
+      <Field label="부서" value={employee.department_name} />
       <Field label="직급" value={employee.position} />
       <Field label="입사일" value={employee.hire_date} />
 
@@ -36,7 +36,7 @@ function DetailView({ employee }: any) {
   );
 }
 
-function EditForm({ formData, setFormData }: any) {
+function EditForm({ formData, setFormData, departments }: any) {
   return (
     <>
       <div className="mb-3">
@@ -91,11 +91,28 @@ function EditForm({ formData, setFormData }: any) {
         />
       </div>
 
-      <Input
-        label="부서"
-        value={formData.department_id}
-        onChange={(v: any) => setFormData({ ...formData, department_id: v })}
-      />
+      <div className="mb-3">
+        <label className="form-label">부서</label>
+
+        <select
+          className="form-select"
+          value={formData.department_id ?? ""}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              department_id: e.target.value || null,
+            })
+          }
+        >
+          <option value="">부서 선택</option>
+
+          {departments.map((dept: any) => (
+            <option key={dept.id} value={dept.id}>
+              {dept.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <Input
         label="직급"
@@ -158,6 +175,7 @@ export default function EmployeeDetailPanel({
   employeeId,
   isOpen,
   onClose,
+  departments,
 }: any) {
   const [employee, setEmployee] = useState<any>(null);
   const [editMode, setEditMode] = useState(false);
@@ -239,7 +257,11 @@ export default function EmployeeDetailPanel({
             {!editMode ? (
               <DetailView employee={employee} />
             ) : (
-              <EditForm formData={formData} setFormData={setFormData} />
+              <EditForm
+                formData={formData}
+                setFormData={setFormData}
+                departments={departments}
+              />
             )}
 
             <div className="mt-4">

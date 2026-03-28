@@ -8,6 +8,7 @@ export default function CreateEmployeeModal({
   isOpen,
   onClose,
   onSuccess,
+  departments,
 }: any) {
   const [formData, setFormData] = useState({
     last_name: "",
@@ -109,7 +110,11 @@ export default function CreateEmployeeModal({
 
           {/* BODY */}
           <div className="p-3">
-            <EmployeeForm formData={formData} onChange={handleChange} />
+            <EmployeeForm
+              formData={formData}
+              onChange={handleChange}
+              departments={departments}
+            />
           </div>
 
           {/* FOOTER */}

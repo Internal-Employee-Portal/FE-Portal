@@ -5,7 +5,7 @@ export default function EmployeeRow({ emp, onClick }: any) {
     <tr style={{ cursor: "pointer" }} onClick={() => onClick(emp.id)}>
       <td>{emp.name}</td>
       <td>{emp.email || "-"}</td>
-      <td>{emp.department || "-"}</td>
+      <td>{emp.department_name || "-"}</td>
       <td>{emp.position || "-"}</td>
       <td>{emp.phone || "-"}</td>
       <td>{emp.hire_date || "-"}</td>

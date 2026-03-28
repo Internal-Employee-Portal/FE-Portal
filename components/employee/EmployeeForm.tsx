@@ -2,7 +2,7 @@
 
 import { formatPhone } from "@/utils/format";
 
-export default function EmployeeForm({ formData, onChange }: any) {
+export default function EmployeeForm({ formData, onChange, departments }: any) {
   return (
     <div className="row">
       {/* 이름 */}
@@ -71,12 +71,25 @@ export default function EmployeeForm({ formData, onChange }: any) {
       />
 
       {/* 부서 */}
-      <Input
-        col
-        label="부서 ID"
-        value={formData.department_id}
-        onChange={(v: any) => onChange("department_id", v)}
-      />
+      <div className="col-md-6 mb-3">
+        <label className="form-label">부서</label>
+
+        <select
+          className="form-select"
+          value={formData.department_id ?? ""}
+          onChange={(e) =>
+            onChange("department_id", e.target.value ? e.target.value : null)
+          }
+        >
+          <option value="">부서 선택</option>
+
+          {departments.map((dept: any) => (
+            <option key={dept.id} value={dept.id}>
+              {dept.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* 직급 */}
       <Input

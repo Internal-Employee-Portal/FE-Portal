@@ -18,11 +18,21 @@ export default function AdminDashboard() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [departments, setDepartments] = useState([]);
 
   const router = useRouter();
 
   useEffect(() => {
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      const res = await apiFetch("/departments");
+      setDepartments(res.departments);
+    };
+
+    fetchDepartments();
   }, []);
 
   useEffect(() => {
@@ -69,6 +79,7 @@ export default function AdminDashboard() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSuccess={fetchData}
+                departments={departments}
               />
             </div>
 
@@ -95,6 +106,7 @@ export default function AdminDashboard() {
               employeeId={selectedId}
               isOpen={isOpen}
               onClose={() => setIsOpen(false)}
+              departments={departments}
             />
 
             {/* FOOTER */}
