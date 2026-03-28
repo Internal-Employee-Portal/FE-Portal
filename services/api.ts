@@ -12,12 +12,18 @@ export async function apiFetch(url: string, options: any = {}) {
     },
   });
 
-  if ((res.status === 401 || res.status === 403) && token) {
+  if (res.status === 401 && token) {
     localStorage.removeItem("token");
 
     alert("토큰이 만료되었습니다.");
     window.location.href = "/login";
 
+    return;
+  }
+
+  if (res.status === 403) {
+    alert("접근 권한이 없습니다.");
+    window.location.href = "/my-info";
     return;
   }
 
