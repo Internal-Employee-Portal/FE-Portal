@@ -52,7 +52,7 @@ export default function AdminDashboard() {
   };
 
   const fetchDepartments = async () => {
-    const res = await apiFetch("/departments/");
+    const res = await apiFetch("/departments");
     setDepartments(res.departments);
   };
 

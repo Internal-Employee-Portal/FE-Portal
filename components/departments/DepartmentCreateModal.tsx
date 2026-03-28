@@ -27,7 +27,7 @@ export default function DepartmentCreateModal({
     }
 
     try {
-      await apiFetch("/departments/", {
+      await apiFetch("/departments", {
         method: "POST",
         body: JSON.stringify(formData),
       });

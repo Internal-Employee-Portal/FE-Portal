@@ -46,7 +46,7 @@ export default function BackgroundSection({ employee }: any) {
     setIsChecking(true);
     setError(null);
     try {
-      await apiFetch("/background/", {
+      await apiFetch("/background", {
         method: "POST",
         body: JSON.stringify({
           employeeId: employee.id,
