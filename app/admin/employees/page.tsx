@@ -49,8 +49,10 @@ export default function AdminDashboard() {
     setEmployees(data);
   };
 
-  const filtered = employees.filter((emp: any) =>
-    emp.name.toLowerCase().includes(search.toLowerCase()),
+  const filtered = employees.filter(
+    (emp: any) =>
+      emp.name.toLowerCase().includes(search.toLowerCase()) ||
+      emp.email.toLowerCase().includes(search.toLowerCase()),
   );
 
   if (!user) return <div>Loading...</div>;
@@ -87,7 +89,7 @@ export default function AdminDashboard() {
             <div className="p-3">
               <input
                 className="form-control"
-                placeholder="이름으로 검색..."
+                placeholder="이름 또는 이메일로 검색..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
