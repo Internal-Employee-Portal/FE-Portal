@@ -7,3 +7,10 @@ export const formatPhone = (value: string) => {
   }
   return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
 };
+
+export const formatStatus = (status: string) => {
+  if (status === "ACTIVE") return { badge: "bg-success", label: "재직" };
+  else if (status === "RESIGNED") return { badge: "bg-danger", label: "퇴사" };
+  else if (status === "ON_LEAVE")
+    return { badge: "bg-secondary", label: "휴직" };
+};

@@ -12,7 +12,7 @@ export default function EmployeeTable({ employees, onSelect }: any) {
           <th>부서</th>
           <th>직급</th>
           <th>전화번호</th>
-          <th>입사일</th>
+          <th>상태</th>
           <th>역할</th>
         </tr>
       </thead>

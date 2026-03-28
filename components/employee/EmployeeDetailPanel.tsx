@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { apiFetch } from "@/services/api";
-import { formatPhone } from "@/utils/format";
+import { formatPhone, formatStatus } from "@/utils/format";
 import BackgroundSection from "./background/BackgroundSection";
 
 function DetailView({ employee }: any) {
@@ -21,6 +21,7 @@ function DetailView({ employee }: any) {
       <Field label="부서" value={employee.department_name} />
       <Field label="직급" value={employee.position} />
       <Field label="입사일" value={employee.hire_date} />
+      <Field label="상태" value={formatStatus(employee.status)?.label} />
 
       <div className="mb-3">
         <div className="text-muted small">역할</div>
@@ -130,6 +131,34 @@ function EditForm({ formData, setFormData, departments }: any) {
             setFormData({ ...formData, hire_date: e.target.value })
           }
         />
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label">상태</label>
+
+        <select
+          className="form-select"
+          value={formData.status ?? "ACTIVE"}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              status: e.target.value || null,
+            })
+          }
+        >
+          <option value="ACTIVE">재직</option>
+          <option value="ON_LEAVE">휴직</option>
+          <option value="RESIGNED">퇴사</option>
+        </select>
+
+        {formData.status === "RESIGNED" && (
+          <div className="alert alert-danger mt-2">
+            <span className="form-text small text-muted">
+              퇴사 처리 시 계정은 기본적으로 비활성화됩니다. <br />
+              필요한 경우 관리자 권한으로 다시 활성화할 수 있습니다.
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="mb-3">
@@ -254,6 +283,17 @@ export default function EmployeeDetailPanel({
 
         <div className="flex-grow-1 overflow-auto">
           <div className="p-4">
+            {employee.status == "RESIGNED" && employee.is_active ? (
+              <div className="alert alert-danger mt-2">
+                <b className="form-text">
+                  관리자에 의해 일시적으로 활성화된 퇴사자 계정입니다. <br />
+                  작업 완료 후 계정을 다시 비활성화해 주세요.
+                </b>
+              </div>
+            ) : (
+              ""
+            )}
+
             {!editMode ? (
               <DetailView employee={employee} />
             ) : (
@@ -290,18 +330,26 @@ export default function EmployeeDetailPanel({
               )}
             </div>
 
-            <div className="mt-2">
-              <button
-                className={`btn ${
-                  employee?.is_active ? "btn-danger" : "btn-success"
-                } w-100 py-2`}
-                onClick={toggleActive}
-              >
-                {employee?.is_active ? "계정 비활성화" : "계정 활성화"}
-              </button>
-            </div>
+            {!editMode ? (
+              <>
+                <div className="mt-2">
+                  <button
+                    className={`btn ${
+                      employee?.is_active ? "btn-danger" : "btn-success"
+                    } w-100 py-2`}
+                    onClick={toggleActive}
+                  >
+                    {employee?.is_active
+                      ? "계정 비활성화하기"
+                      : "계정 활성화하기"}
+                  </button>
+                </div>
 
-            <BackgroundSection employee={employee} />
+                <BackgroundSection employee={employee} />
+              </>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

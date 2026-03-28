@@ -1,6 +1,10 @@
 "use client";
 
+import { formatStatus } from "@/utils/format";
+
 export default function EmployeeRow({ emp, onClick }: any) {
+  const statusRes = formatStatus(emp.status);
+
   return (
     <tr style={{ cursor: "pointer" }} onClick={() => onClick(emp.id)}>
       <td>{emp.name}</td>
@@ -8,7 +12,11 @@ export default function EmployeeRow({ emp, onClick }: any) {
       <td>{emp.department_name || "-"}</td>
       <td>{emp.position || "-"}</td>
       <td>{emp.phone || "-"}</td>
-      <td>{emp.hire_date || "-"}</td>
+      <td>
+        <span className={`badge ${statusRes?.badge}`}>
+          {emp.role ? statusRes?.label : "-"}
+        </span>
+      </td>
 
       <td>
         <span
