@@ -90,13 +90,14 @@ export default function CreateEmployeeModal({
       {/* OVERLAY */}
       <div
         className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"
+        style={{ zIndex: 2000 }}
         onClick={onClose}
       />
 
       {/* MODAL */}
       <div
         className="position-fixed top-50 start-50 translate-middle w-100"
-        style={{ maxWidth: "720px", zIndex: 1050 }}
+        style={{ maxWidth: "720px", zIndex: 2001 }}
       >
         <div
           className="bg-white rounded shadow"

@@ -32,7 +32,7 @@ export default function FilterDropdown({
           style={{
             top: "100%",
             left: 0,
-            zIndex: 1050,
+            zIndex: 1000,
             minWidth: 150,
           }}
         >
@@ -56,9 +56,9 @@ export default function FilterDropdown({
                   current.includes(opt.value) ? "bg-primary text-white" : ""
                 }`}
                 style={{ cursor: "pointer" }}
-                onClick={() => onSelect(column, opt.value)} // 🔥 value 전달
+                onClick={() => onSelect(column, opt.value)}
               >
-                {opt.label} {/* 🔥 화면 표시 */}
+                {opt.label}
               </li>
             ))}
           </ul>
