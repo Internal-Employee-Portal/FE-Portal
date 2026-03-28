@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { apiFetch } from "@/services/api";
 import { formatPhone, formatStatus } from "@/utils/format";
+import ConfirmModal from "../layout/ConfirmModal";
 import BackgroundSection from "./background/BackgroundSection";
 
 function DetailView({ employee }: any) {
@@ -209,6 +210,7 @@ export default function EmployeeDetailPanel({
   const [employee, setEmployee] = useState<any>(null);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState<any>(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
@@ -251,6 +253,22 @@ export default function EmployeeDetailPanel({
     fetchData();
   };
 
+  const handleConfirmDelete = async () => {
+    setIsConfirmOpen(false);
+
+    try {
+      await apiFetch(`/employees/${employeeId}`, {
+        method: "DELETE",
+      });
+
+      onClose();
+      fetchData();
+    } catch (err) {
+      console.error(err);
+      alert("삭제 실패");
+    }
+  };
+
   const toggleActive = async () => {
     await apiFetch(`/auth/${employeeId}`, {
       method: "PUT",
@@ -278,7 +296,29 @@ export default function EmployeeDetailPanel({
       >
         <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
           <h5 className="mb-0">직원 상세 정보</h5>
-          <button className="btn-close" onClick={onClose}></button>
+
+          <div className="d-flex align-items-center gap-3">
+            {/* 삭제 버튼 */}
+            <i
+              className="bi bi-trash"
+              style={{ cursor: "pointer" }}
+              onClick={() => setIsConfirmOpen(true)}
+            ></i>
+            <ConfirmModal
+              isOpen={isConfirmOpen}
+              title="직원 삭제"
+              message={
+                <>
+                  직원을 삭제하시겠습니까? <br />
+                </>
+              }
+              onCancel={() => setIsConfirmOpen(false)}
+              onConfirm={handleConfirmDelete}
+            />
+
+            {/* 닫기 버튼 */}
+            <button className="btn-close" onClick={onClose} />
+          </div>
         </div>
 
         <div className="flex-grow-1 overflow-auto">

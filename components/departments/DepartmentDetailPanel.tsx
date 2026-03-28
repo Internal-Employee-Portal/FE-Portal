@@ -207,10 +207,6 @@ export default function DepartmentDetailPanel({
     }
   };
 
-  const handleDeleteClick = () => {
-    setIsConfirmOpen(true);
-  };
-
   const handleConfirmDelete = async () => {
     setIsConfirmOpen(false);
 
