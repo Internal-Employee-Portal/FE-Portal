@@ -283,7 +283,7 @@ export default function EmployeeDetailPanel({
 
         <div className="flex-grow-1 overflow-auto">
           <div className="p-4">
-            {employee.status == "RESIGNED" && employee.is_active ? (
+            {employee && employee.status == "RESIGNED" && employee.is_active ? (
               <div className="alert alert-danger mt-2">
                 <b className="form-text">
                   관리자에 의해 일시적으로 활성화된 퇴사자 계정입니다. <br />
