@@ -96,6 +96,61 @@ export default function LoginPage() {
             로그인
           </button>
         </form>
+
+        {/* 🔥 안내 문구 */}
+        <div className="mt-4 mb-2 text-center">
+          <div className="small text-muted">
+            테스트용 계정으로 클릭 시 자동 입력됩니다.
+          </div>
+        </div>
+
+        {/* 관리자 계정 */}
+        <div
+          className="p-3 rounded bg-light border mb-2"
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            setEmail("admin@test.com");
+            setPassword("1234");
+          }}
+        >
+          <div className="text-muted small mb-2 fw-semibold">관리자 계정</div>
+
+          <div className="small">
+            <div>
+              <span className="text-muted">이메일:</span>{" "}
+              <code>admin@test.com</code>
+            </div>
+            <div>
+              <span className="text-muted">비밀번호:</span>{" "}
+              <code>admin1234</code>
+            </div>
+          </div>
+        </div>
+
+        {/* 일반 사용자 계정 */}
+        <div
+          className="p-3 rounded bg-light border"
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            setEmail("user@test.com");
+            setPassword("1234");
+          }}
+        >
+          <div className="text-muted small mb-2 fw-semibold">
+            일반 사용자 계정
+          </div>
+
+          <div className="small">
+            <div>
+              <span className="text-muted">이메일:</span>{" "}
+              <code>user@test.com</code>
+            </div>
+            <div>
+              <span className="text-muted">비밀번호:</span>{" "}
+              <code>user1234</code>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

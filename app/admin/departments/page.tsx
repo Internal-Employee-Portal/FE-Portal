@@ -46,7 +46,7 @@ export default function DepartmentPage() {
   // FETCH LIST
   // =====================
   const fetchDepartments = async () => {
-    const data = await apiFetch("/departments");
+    const data = await apiFetch("/departments/");
     setDepartments(data.departments || []);
   };
 

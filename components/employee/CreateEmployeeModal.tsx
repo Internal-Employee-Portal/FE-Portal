@@ -47,7 +47,7 @@ export default function CreateEmployeeModal({
     }
 
     try {
-      await apiFetch("/employees", {
+      await apiFetch("/employees/", {
         method: "POST",
         body: JSON.stringify({
           ...formData,

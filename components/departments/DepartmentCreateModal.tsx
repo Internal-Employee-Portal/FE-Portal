@@ -8,7 +8,6 @@ export default function DepartmentCreateModal({
   isOpen,
   admins,
   onClose,
-  onSuccess,
 }: any) {
   const [formData, setFormData] = useState({
     name: "",
@@ -28,7 +27,7 @@ export default function DepartmentCreateModal({
     }
 
     try {
-      await apiFetch("/departments", {
+      await apiFetch("/departments/", {
         method: "POST",
         body: JSON.stringify(formData),
       });
@@ -43,7 +42,6 @@ export default function DepartmentCreateModal({
       });
 
       onClose();
-      onSuccess();
     } catch (err) {
       console.error(err);
       alert("부서 생성 실패");
