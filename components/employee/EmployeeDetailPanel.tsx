@@ -271,7 +271,7 @@ export default function EmployeeDetailPanel({
 
   const toggleActive = async () => {
     await apiFetch(`/auth/${employeeId}`, {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify({
         is_active: !employee.is_active,
       }),

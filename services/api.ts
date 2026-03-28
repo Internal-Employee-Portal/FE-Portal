@@ -12,7 +12,7 @@ export async function apiFetch(url: string, options: any = {}) {
     },
   });
 
-  if (res.status === 401 || res.status === 403) {
+  if ((res.status === 401 || res.status === 403) && token) {
     localStorage.removeItem("token");
 
     alert("토큰이 만료되었습니다.");
@@ -22,7 +22,7 @@ export async function apiFetch(url: string, options: any = {}) {
   }
 
   if (!res.ok) {
-    const errorData = await res.json();
+    const errorData = await res.json().catch(() => ({}));
     throw new Error(errorData.detail || "요청 실패");
   }
 

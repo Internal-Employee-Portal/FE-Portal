@@ -1,5 +1,6 @@
 "use client";
 
+import { apiFetch } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -16,39 +17,23 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        },
-      );
+      const data = await apiFetch("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
-      if (!res.ok) {
-        throw new Error("Login failed");
-      }
-
-      const data = await res.json();
-
-      // 토큰 저장
       localStorage.setItem("token", data.access_token);
 
       const payload = JSON.parse(atob(data.access_token.split(".")[1]));
 
-      const me = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/employees/me`,
-        {
-          headers: {
-            Authorization: `Bearer ${data.access_token}`,
-          },
+      const me = await apiFetch("/employees/me", {
+        headers: {
+          Authorization: `Bearer ${data.access_token}`,
         },
-      ).then((res) => res.json());
+      });
 
       setUser(me);
 
@@ -57,8 +42,8 @@ export default function LoginPage() {
       } else if (payload.role === "ADMIN") {
         router.replace("/admin/employees");
       }
-    } catch (err) {
-      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
