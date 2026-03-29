@@ -23,7 +23,9 @@ export async function apiFetch(url: string, options: any = {}) {
 
   if (res.status === 403) {
     alert("접근 권한이 없습니다.");
-    window.location.href = "/my-info";
+
+    if (token) window.location.href = "/my-info";
+    else window.location.href = "/login";
     return;
   }
 
