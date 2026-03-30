@@ -8,6 +8,7 @@ const AuthContext = createContext<any>(null);
 
 export function AuthProvider({ children }: any) {
   const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const loadUser = async () => {
@@ -22,6 +23,8 @@ export function AuthProvider({ children }: any) {
       }
     } catch (err) {
       logout("세션이 만료되었습니다.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,7 +47,7 @@ export function AuthProvider({ children }: any) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

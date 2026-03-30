@@ -10,11 +10,13 @@ import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 
 export default function MyInfoPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
   const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
+    if (loading) return;
+
     if (!user) {
       alert("로그인 후 접근 가능합니다.");
       router.push("/login");
