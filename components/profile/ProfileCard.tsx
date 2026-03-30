@@ -34,7 +34,7 @@ export default function ProfileCard({ profile }: any) {
       setFormData(updated);
 
       setIsEditing(false);
-    } catch (err) {
+    } catch (err: any) {
       alert(err?.message || "수정 실패");
     } finally {
       setIsSave(false);
