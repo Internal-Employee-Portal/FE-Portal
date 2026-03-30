@@ -12,11 +12,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
 
     try {
+      setLoading(true);
       const data = await apiFetch("/auth/login", {
         method: "POST",
         body: JSON.stringify({
@@ -48,6 +50,8 @@ export default function LoginPage() {
       }
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,7 +85,11 @@ export default function LoginPage() {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">
+          <button
+            type="submit"
+            className="btn btn-primary w-100"
+            disabled={loading}
+          >
             로그인
           </button>
         </form>
