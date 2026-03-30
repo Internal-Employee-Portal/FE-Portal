@@ -276,9 +276,9 @@ export default function EmployeeDetailPanel({
       });
 
       fetchListData();
-    } catch (err) {
-      console.error(err);
-      alert("삭제 실패");
+    } catch (err: any) {
+      if (err?.message) alert(err.message);
+      else alert("삭제 실패");
     }
   };
 

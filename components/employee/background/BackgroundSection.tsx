@@ -14,6 +14,7 @@ export default function BackgroundSection({ employee }: any) {
   const [historyList, setHistoryList] = useState<any[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detail, setDetail] = useState<any>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   const fetchHistory = async () => {
     setError(null);
@@ -21,7 +22,6 @@ export default function BackgroundSection({ employee }: any) {
       const res = await apiFetch(`/background?employeeId=${employee.id}`);
       setHistoryList(res.backgrounds || []);
     } catch (e) {
-      console.error(e);
       setError("이력 조회 중 오류가 발생했습니다.");
     }
   };
@@ -64,12 +64,15 @@ export default function BackgroundSection({ employee }: any) {
     if (!employee?.id) return;
 
     setError(null);
+    setIsSyncing(true);
 
     try {
       await apiFetch(`/background/sync?employeeId=${employee.id}`);
       await fetchHistory();
     } catch (e) {
       setError("이력 동기화 중 오류가 발생했습니다.");
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -119,8 +122,16 @@ export default function BackgroundSection({ employee }: any) {
         <button
           className="btn btn-outline-secondary w-100 text-dark"
           onClick={handleSync}
+          disabled={isSyncing}
         >
-          이력 동기화
+          {isSyncing ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2" />
+              동기화 중...{" "}
+            </>
+          ) : (
+            "이력 동기화"
+          )}
         </button>
 
         {historyList.length > 0 && (
