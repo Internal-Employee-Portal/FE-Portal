@@ -15,6 +15,7 @@ export default function BackgroundSection({ employee }: any) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detail, setDetail] = useState<any>(null);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isDetail, setIsDetail] = useState(false);
 
   const fetchHistory = async () => {
     setError(null);
@@ -22,18 +23,25 @@ export default function BackgroundSection({ employee }: any) {
       const res = await apiFetch(`/background?employeeId=${employee.id}`);
       setHistoryList(res.backgrounds || []);
     } catch (e) {
-      setError("이력 조회 중 오류가 발생했습니다.");
+      setError(
+        "이력 조회 중 오류가 발생했습니다. \n잠시 후 다시 실행해주세요.",
+      );
     }
   };
 
   const fetchDetail = async (checkId: string) => {
     try {
       setError(null);
+      setIsDetail(true);
 
       const res = await apiFetch(`/background/${checkId}`);
       setDetail(res);
     } catch (e) {
-      setError("상세 조회 중 오류가 발생했습니다.");
+      setError(
+        "상세 조회 중 오류가 발생했습니다. \n잠시 후 다시 실행해주세요.",
+      );
+    } finally {
+      setIsDetail(false);
     }
   };
 
@@ -54,7 +62,9 @@ export default function BackgroundSection({ employee }: any) {
       });
       await fetchHistory();
     } catch (e) {
-      setError("배경 조회 실행 중 오류가 발생했습니다.");
+      setError(
+        "배경 조회 실행 중 오류가 발생했습니다. \n잠시 후 다시 실행해주세요.",
+      );
     } finally {
       setIsChecking(false);
     }
@@ -70,7 +80,9 @@ export default function BackgroundSection({ employee }: any) {
       await apiFetch(`/background/sync?employeeId=${employee.id}`);
       await fetchHistory();
     } catch (e) {
-      setError("이력 동기화 중 오류가 발생했습니다.");
+      setError(
+        "이력 동기화 중 오류가 발생했습니다. \n잠시 후 다시 실행해주세요.",
+      );
     } finally {
       setIsSyncing(false);
     }
@@ -151,7 +163,12 @@ export default function BackgroundSection({ employee }: any) {
         <>
           <h6 className="fw-bold mb-2">배경 조회 이력</h6>
           {error && (
-            <div className="alert alert-danger py-2 small">{error}</div>
+            <div
+              className="alert alert-danger py-2 small"
+              style={{ whiteSpace: "pre-line" }}
+            >
+              {error}
+            </div>
           )}
 
           <HistoryList
@@ -162,6 +179,21 @@ export default function BackgroundSection({ employee }: any) {
 
           {detail && <HistoryDetail data={detail} />}
         </>
+      )}
+
+      {isDetail && (
+        <div
+          className="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+          style={{
+            backgroundColor: "rgba(255,255,255,0.6)",
+            zIndex: 10,
+          }}
+        >
+          <div className="text-center">
+            <div className="spinner-border mb-2"></div>
+            <div className="small text-muted">불러오는 중...</div>
+          </div>
+        </div>
       )}
     </div>
   );
