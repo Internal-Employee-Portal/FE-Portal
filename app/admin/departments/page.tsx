@@ -1,7 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { apiFetch } from "@/services/api";
+import { useAuth } from "@/context/AuthContext";
 
 import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
@@ -26,25 +28,34 @@ type Department = {
   deleted_at?: string | null;
 };
 
-type DepartmentDetail = Department & {
-  employees?: any[];
-};
-
 export default function DepartmentPage() {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [admins, setAdmins] = useState<Admin[]>([]);
-
-  const [selectedDept, setSelectedDept] = useState<DepartmentDetail | null>(
-    null,
-  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  const { user } = useAuth();
+  const router = useRouter();
+
   // =====================
   // FETCH LIST
   // =====================
+
+  useEffect(() => {
+    if (!user) return;
+
+    if (user.role !== "ADMIN") {
+      alert("관리자만 접근 가능합니다.");
+      router.push("/my-info");
+      return;
+    }
+
+    fetchDepartments();
+    fetchAdmins();
+  }, [user]);
+
   const fetchDepartments = async () => {
     const data = await apiFetch("/departments");
     setDepartments(data.departments || []);
@@ -54,11 +65,6 @@ export default function DepartmentPage() {
     const data = await apiFetch("/employees/admin/list");
     setAdmins(data || []);
   };
-
-  useEffect(() => {
-    fetchDepartments();
-    fetchAdmins();
-  }, []);
 
   return (
     <div className="d-flex">
@@ -104,7 +110,6 @@ export default function DepartmentPage() {
           deptId={selectedId}
           onClose={() => {
             setIsOpen(false);
-            setSelectedDept(null);
           }}
         />
 

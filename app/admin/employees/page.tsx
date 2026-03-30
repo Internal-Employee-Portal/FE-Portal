@@ -33,17 +33,16 @@ export default function AdminDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    fetchData();
-    fetchDepartments();
-  }, []);
-
-  useEffect(() => {
     if (!user) return;
 
     if (user.role !== "ADMIN") {
       alert("관리자만 접근 가능합니다.");
       router.push("/my-info");
+      return;
     }
+
+    fetchData();
+    fetchDepartments();
   }, [user]);
 
   const fetchData = async () => {

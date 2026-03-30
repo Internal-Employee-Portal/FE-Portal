@@ -1,5 +1,7 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { apiFetch } from "@/services/api";
 import ProfileCard from "@/components/profile/ProfileCard";
@@ -8,11 +10,19 @@ import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 
 export default function MyInfoPage() {
+  const { user } = useAuth();
+  const router = useRouter();
   const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
+    if (!user) {
+      alert("로그인 후 접근 가능합니다.");
+      router.push("/login");
+      return;
+    }
+
     fetchData();
-  }, []);
+  }, [user]);
 
   const fetchData = async () => {
     const data = await apiFetch("/employees/me");
