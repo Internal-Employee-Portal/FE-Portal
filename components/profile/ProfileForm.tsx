@@ -6,8 +6,24 @@ import { formatPhone } from "@/utils/format";
 export default function ProfileForm({ formData, onChange }: any) {
   return (
     <form>
-      <div className="mb-4">
-        <ProfileInfoRow label="이름" value={formData.name} />
+      <div className="col-md-6 mb-3">
+        <label className="form-label fw-bold">이름</label>
+
+        <div className="d-flex gap-2">
+          <input
+            className="form-control"
+            placeholder="성"
+            value={formData.last_name || ""}
+            onChange={(e) => onChange("last_name", e.target.value)}
+          />
+
+          <input
+            className="form-control"
+            placeholder="이름"
+            value={formData.first_name || ""}
+            onChange={(e) => onChange("first_name", e.target.value)}
+          />
+        </div>
       </div>
 
       <div className="mb-4">

@@ -27,8 +27,6 @@ export default function LoginPage() {
 
       localStorage.setItem("token", data.access_token);
 
-      const payload = JSON.parse(atob(data.access_token.split(".")[1]));
-
       const me = await apiFetch("/employees/me", {
         headers: {
           Authorization: `Bearer ${data.access_token}`,

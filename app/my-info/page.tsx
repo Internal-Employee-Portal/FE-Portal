@@ -30,6 +30,8 @@ export default function MyInfoPage() {
     setProfile({
       id: data.id,
       name: data.name,
+      last_name: data.last_name,
+      first_name: data.first_name,
       email: data.email,
       phone: data.phone,
       department: data.department_name,
