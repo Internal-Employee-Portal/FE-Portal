@@ -29,8 +29,8 @@ export default function ProfileCard({ profile }: any) {
       setFormData(updated);
 
       setIsEditing(false);
-    } catch {
-      alert("수정 실패");
+    } catch (err) {
+      alert(err?.message || "수정 실패");
     }
   };
 

@@ -226,8 +226,7 @@ export default function DepartmentDetailPanel({
       onClose();
       onSuccess();
     } catch (err: any) {
-      if (err?.message) alert(err.message);
-      else alert("삭제 실패");
+      alert(err?.message || "삭제 실패");
     }
   };
 
