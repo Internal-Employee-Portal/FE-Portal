@@ -35,11 +35,17 @@ export default function LoginPage() {
         },
       });
 
+      if (!me.is_active) {
+        localStorage.removeItem("token");
+        setError("비활성화 계정입니다. 관리자에게 문의하세요.");
+        return;
+      }
+
       setUser(me);
 
-      if (payload.role === "USER") {
+      if (me.role === "USER") {
         router.replace("/my-info");
-      } else if (payload.role === "ADMIN") {
+      } else if (me.role === "ADMIN") {
         router.replace("/admin/employees");
       }
     } catch (err: any) {
