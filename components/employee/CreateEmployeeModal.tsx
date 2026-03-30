@@ -29,7 +29,6 @@ export default function CreateEmployeeModal({
   };
 
   const handleSubmit = async () => {
-    // 🔥 기본 validation
     const required = [
       "last_name",
       "first_name",
@@ -77,9 +76,9 @@ export default function CreateEmployeeModal({
       });
 
       onClose();
-      onSuccess(); // 리스트 새로고침
-    } catch (err) {
-      alert("생성 실패");
+      onSuccess();
+    } catch (err: any) {
+      alert(err.message);
     }
   };
 

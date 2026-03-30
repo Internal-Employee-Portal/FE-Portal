@@ -236,27 +236,31 @@ export default function EmployeeDetailPanel({
   };
 
   const handleSave = async () => {
-    await apiFetch(`/employees/${employeeId}`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        last_name: formData.last_name,
-        first_name: formData.first_name,
-        employee_code: formData.employee_code,
-        phone: formData.phone,
-        birth_date: formData.birth_date,
-        department_id: formData.department_id,
-        position: formData.position,
-        hire_date: formData.hire_date,
-        status: formData.status,
-        role: formData.role,
-      }),
-    });
+    try {
+      await apiFetch(`/employees/${employeeId}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          last_name: formData.last_name,
+          first_name: formData.first_name,
+          employee_code: formData.employee_code,
+          phone: formData.phone,
+          birth_date: formData.birth_date,
+          department_id: formData.department_id,
+          position: formData.position,
+          hire_date: formData.hire_date,
+          status: formData.status,
+          role: formData.role,
+        }),
+      });
 
-    setEditMode(false);
-    fetchData();
-    setIsOpen(false);
-    setSelectedId(null);
-    fetchListData();
+      setEditMode(false);
+      fetchData();
+      setIsOpen(false);
+      setSelectedId(null);
+      fetchListData();
+    } catch (err: any) {
+      alert(err.message);
+    }
   };
 
   const handleConfirmDelete = async () => {

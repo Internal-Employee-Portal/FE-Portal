@@ -153,10 +153,14 @@ export default function DepartmentDetailPanel({
   const fetchDept = async () => {
     if (!deptId) return;
 
-    const res = await apiFetch(`/departments/${deptId}`);
+    try {
+      const res = await apiFetch(`/departments/${deptId}`);
 
-    setDept(res);
-    setFormData(res);
+      setDept(res);
+      setFormData(res);
+    } catch (err: any) {
+      alert(err.message);
+    }
   };
 
   /* =========================
@@ -202,6 +206,8 @@ export default function DepartmentDetailPanel({
 
       setEditMode(false);
       await fetchDept();
+    } catch (err: any) {
+      alert(err.message);
     } finally {
       setLoading(false);
     }
@@ -216,9 +222,9 @@ export default function DepartmentDetailPanel({
       });
 
       onClose();
-    } catch (err) {
-      console.error(err);
-      alert("삭제 실패");
+    } catch (err: any) {
+      if (err?.message) alert(err.message);
+      else alert("삭제 실패");
     }
   };
 

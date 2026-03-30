@@ -33,11 +33,6 @@ export default function ChangePasswordModal({
       return;
     }
 
-    if (form.new_password !== form.confirm_password) {
-      alert("비밀번호 확인이 일치하지 않습니다.");
-      return;
-    }
-
     try {
       await apiFetch("/auth/change-password", {
         method: "PATCH",

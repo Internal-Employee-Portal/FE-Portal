@@ -42,9 +42,8 @@ export default function DepartmentCreateModal({
       });
 
       onClose();
-    } catch (err) {
-      console.error(err);
-      alert("부서 생성 실패");
+    } catch (err: any) {
+      alert(err.message);
     }
   };
 
