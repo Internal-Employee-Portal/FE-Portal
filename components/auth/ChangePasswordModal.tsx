@@ -15,6 +15,7 @@ export default function ChangePasswordModal({
     new_password: "",
     confirm_password: "",
   });
+  const [isSave, setIsSave] = useState(false);
 
   const handleChange = (key: string, value: string) => {
     setForm({ ...form, [key]: value });
@@ -34,6 +35,8 @@ export default function ChangePasswordModal({
     }
 
     try {
+      setIsSave(true);
+
       await apiFetch("/auth/change-password", {
         method: "PATCH",
         body: JSON.stringify(form),
@@ -51,6 +54,8 @@ export default function ChangePasswordModal({
       onClose();
     } catch (err: any) {
       alert(err?.message || "비밀번호 변경 실패");
+    } finally {
+      setIsSave(false);
     }
   };
 
@@ -111,7 +116,11 @@ export default function ChangePasswordModal({
             <button className="btn btn-secondary" onClick={onClose}>
               취소
             </button>
-            <button className="btn btn-primary" onClick={handleSubmit}>
+            <button
+              className="btn btn-primary"
+              onClick={handleSubmit}
+              disabled={isSave}
+            >
               변경
             </button>
           </div>
