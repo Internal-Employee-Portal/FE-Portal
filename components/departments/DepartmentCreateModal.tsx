@@ -6,6 +6,7 @@ import DepartmentForm from "./DepartmentForm";
 
 export default function DepartmentCreateModal({
   isOpen,
+  onSuccess,
   admins,
   onClose,
 }: any) {
@@ -42,6 +43,7 @@ export default function DepartmentCreateModal({
       });
 
       onClose();
+      onSuccess();
     } catch (err: any) {
       alert(err.message);
     }

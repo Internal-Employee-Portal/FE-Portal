@@ -100,6 +100,7 @@ export default function DepartmentPage() {
         {/* DETAIL PANEL */}
         <DepartmentDetailPanel
           isOpen={isOpen}
+          onSuccess={fetchDepartments}
           deptId={selectedId}
           onClose={() => {
             setIsOpen(false);
@@ -110,6 +111,7 @@ export default function DepartmentPage() {
         {/* CREATE MODAL */}
         <DepartmentCreateModal
           isOpen={isModalOpen}
+          onSuccess={fetchDepartments}
           admins={admins}
           onClose={() => setIsModalOpen(false)}
         />

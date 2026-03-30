@@ -125,6 +125,7 @@ function Field({ label, value }: any) {
 ========================= */
 export default function DepartmentDetailPanel({
   isOpen,
+  onSuccess,
   deptId,
   onClose,
 }: any) {
@@ -206,6 +207,7 @@ export default function DepartmentDetailPanel({
 
       setEditMode(false);
       await fetchDept();
+      onSuccess();
     } catch (err: any) {
       alert(err.message);
     } finally {
@@ -222,6 +224,7 @@ export default function DepartmentDetailPanel({
       });
 
       onClose();
+      onSuccess();
     } catch (err: any) {
       if (err?.message) alert(err.message);
       else alert("삭제 실패");
