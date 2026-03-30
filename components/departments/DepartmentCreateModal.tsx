@@ -15,6 +15,7 @@ export default function DepartmentCreateModal({
     description: "",
     manager_id: null as string | null,
   });
+  const [isSave, setIsSave] = useState(false);
 
   const handleChange = (key: string, value: any) => {
     setFormData({ ...formData, [key]: value });
@@ -28,6 +29,8 @@ export default function DepartmentCreateModal({
     }
 
     try {
+      setIsSave(true);
+
       await apiFetch("/departments", {
         method: "POST",
         body: JSON.stringify(formData),
@@ -46,6 +49,8 @@ export default function DepartmentCreateModal({
       onSuccess();
     } catch (err: any) {
       alert(err.message);
+    } finally {
+      setIsSave(false);
     }
   };
 
@@ -88,7 +93,11 @@ export default function DepartmentCreateModal({
             <button className="btn btn-secondary" onClick={onClose}>
               취소
             </button>
-            <button className="btn btn-primary" onClick={handleSubmit}>
+            <button
+              className="btn btn-primary"
+              onClick={handleSubmit}
+              disabled={isSave}
+            >
               생성
             </button>
           </div>

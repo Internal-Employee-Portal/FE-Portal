@@ -23,6 +23,7 @@ export default function CreateEmployeeModal({
     hire_date: "",
     role: "USER",
   });
+  const [isSave, setIsSave] = useState(false);
 
   const handleChange = (key: string, value: any) => {
     setFormData({ ...formData, [key]: value });
@@ -46,6 +47,8 @@ export default function CreateEmployeeModal({
     }
 
     try {
+      setIsSave(true);
+
       await apiFetch("/employees", {
         method: "POST",
         body: JSON.stringify({
@@ -79,6 +82,8 @@ export default function CreateEmployeeModal({
       onSuccess();
     } catch (err: any) {
       alert(err.message);
+    } finally {
+      setIsSave(false);
     }
   };
 
@@ -122,7 +127,11 @@ export default function CreateEmployeeModal({
             <button className="btn btn-secondary" onClick={onClose}>
               취소
             </button>
-            <button className="btn btn-primary" onClick={handleSubmit}>
+            <button
+              className="btn btn-primary"
+              onClick={handleSubmit}
+              disabled={isSave}
+            >
               생성
             </button>
           </div>
